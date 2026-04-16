@@ -1,0 +1,1 @@
+print('Geodezja i Geoinformatyka rządzi!')
