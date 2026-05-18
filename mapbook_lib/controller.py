@@ -1,3 +1,7 @@
+import folium
+import requests
+from bs4 import BeautifulSoup
+
 def read_data(users_data: list) -> None:
     for user in users_data:
         print(
@@ -42,5 +46,15 @@ def get_coordinates(location:str)->list:
     response_html_longitude=float(response_html.select('.longitude')[1].text.replace(',','.'))
     return[response_html_latitude,response_html_longitude]
 
-for user in users:
-    print(get_coordinates(location=user['location']))
+def get_mapa(users_data: list)->None:
+    m = folium.Map([52,21], zoom_start=6)
+    for user in users_data:
+        folium.Marker(
+            location=get_coordinates(user['location']),
+            tooltip="Click me!",
+            popup=user['username'],
+            icon=folium.Icon(icon='user'),
+        ).add_to(m)
+
+
+    m.save('mapbook.html')
